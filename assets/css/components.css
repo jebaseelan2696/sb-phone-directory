@@ -246,7 +246,7 @@
 .action-row__label {
   color: var(--color-text-muted);
   font-size: var(--font-size-sm);
-  flex: 0 0 78px;
+  flex: 0 0 92px;
 }
 
 .action-row__number {
