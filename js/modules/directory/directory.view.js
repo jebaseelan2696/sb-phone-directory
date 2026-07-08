@@ -86,9 +86,9 @@ const DirectoryView = (function () {
     ].filter(Boolean);
 
     const actionRows = [
-      phoneActionRow('CUG', contact.cugNo),
-      phoneActionRow('Addl. I', contact.addlNo1),
-      phoneActionRow('Addl. II', contact.addlNo2),
+      phoneActionRow('CUG No.', contact.cugNo),
+      phoneActionRow('Mobile No. 1', contact.addlNo1),
+      phoneActionRow('Mobile No. 2', contact.addlNo2),
       whatsappRow(contact.whatsappNo)
     ].filter(Boolean);
 
