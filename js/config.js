@@ -13,7 +13,7 @@ const APP_CONFIG = {
 
   // How long (minutes) the fetched directory stays cached in the browser
   // before a background refresh is triggered automatically.
-  CACHE_TTL_MINUTES: 360, // 6 hours
+  CACHE_TTL_MINUTES: 20,
 
   // Country code prepended to 10-digit WhatsApp numbers.
   WHATSAPP_COUNTRY_CODE: '91',
