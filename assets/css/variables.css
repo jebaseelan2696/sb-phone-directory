@@ -1,0 +1,99 @@
+/**
+ * variables.css
+ * Design tokens. Light theme is default; dark theme overrides via
+ * [data-theme="dark"] on <html>, or prefers-color-scheme as a fallback.
+ */
+
+:root {
+  /* Brand */
+  --color-primary: #0b3d91;
+  --color-primary-dark: #082a66;
+  --color-accent: #1d7a4c;
+
+  /* Surfaces */
+  --color-bg: #f4f6f9;
+  --color-surface: #ffffff;
+  --color-surface-alt: #eef1f6;
+  --color-border: #dde3ec;
+
+  /* Text */
+  --color-text: #1a2333;
+  --color-text-muted: #5b6576;
+  --color-text-inverse: #ffffff;
+
+  /* States */
+  --color-success: #1d7a4c;
+  --color-danger: #c0392b;
+  --color-whatsapp: #25d366;
+
+  /* Elevation */
+  --shadow-sm: 0 1px 2px rgba(16, 24, 40, 0.06);
+  --shadow-md: 0 4px 12px rgba(16, 24, 40, 0.10);
+  --shadow-lg: 0 10px 30px rgba(16, 24, 40, 0.14);
+
+  /* Radius */
+  --radius-sm: 6px;
+  --radius-md: 12px;
+  --radius-lg: 18px;
+
+  /* Spacing scale */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 24px;
+  --space-6: 32px;
+
+  /* Typography */
+  --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  --font-size-sm: 0.8125rem;
+  --font-size-base: 0.9375rem;
+  --font-size-md: 1.0625rem;
+  --font-size-lg: 1.25rem;
+  --font-size-xl: 1.5rem;
+
+  /* Layout */
+  --header-height: 56px;
+  --max-content-width: 900px;
+
+  --transition-fast: 120ms ease;
+  --transition-base: 200ms ease;
+}
+
+:root[data-theme="dark"] {
+  --color-primary: #4f8ff0;
+  --color-primary-dark: #3a6fc4;
+  --color-accent: #3fbf7f;
+
+  --color-bg: #0f141b;
+  --color-surface: #171e29;
+  --color-surface-alt: #1e2733;
+  --color-border: #2b3542;
+
+  --color-text: #e8edf5;
+  --color-text-muted: #9aa5b5;
+  --color-text-inverse: #0f141b;
+
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.35);
+  --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.45);
+  --shadow-lg: 0 10px 30px rgba(0, 0, 0, 0.55);
+}
+
+/* Fallback for first paint before JS applies stored preference,
+   only when the user hasn't explicitly chosen a theme. */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --color-primary: #4f8ff0;
+    --color-primary-dark: #3a6fc4;
+    --color-accent: #3fbf7f;
+
+    --color-bg: #0f141b;
+    --color-surface: #171e29;
+    --color-surface-alt: #1e2733;
+    --color-border: #2b3542;
+
+    --color-text: #e8edf5;
+    --color-text-muted: #9aa5b5;
+    --color-text-inverse: #0f141b;
+  }
+}

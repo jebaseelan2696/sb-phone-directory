@@ -1,0 +1,22 @@
+/**
+ * layout.css
+ * Directory-module-specific layout tweaks (kept minimal; most layout
+ * lives in components.css since V1.0 only has one module/view).
+ */
+
+.notice-banner {
+  background: rgba(11, 61, 145, 0.08);
+  border: 1px solid rgba(11, 61, 145, 0.2);
+  color: var(--color-text);
+  padding: var(--space-2) var(--space-3);
+  border-radius: var(--radius-sm);
+  font-size: var(--font-size-sm);
+  margin-bottom: var(--space-4);
+}
+
+.footer-meta {
+  text-align: center;
+  font-size: var(--font-size-sm);
+  color: var(--color-text-muted);
+  padding: var(--space-5) var(--space-4) var(--space-4);
+}
