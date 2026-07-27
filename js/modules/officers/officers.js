@@ -20,7 +20,7 @@ const OfficersModule = (function () {
       el('span', { class: 'search-bar__icon' }, ['\u{1F50D}']),
       el('input', {
         type: 'search',
-        placeholder: 'Search by name or rank...',
+        placeholder: 'Search by name, rank, or station...',
         'aria-label': 'Search officers',
         id: 'officers-search-input'
       }),

@@ -27,7 +27,13 @@ const OfficersFilter = (function () {
       if (query) {
         const name = normalize(o.name);
         const rankText = normalize(o.rank);
-        if (name.indexOf(query) === -1 && rankText.indexOf(query) === -1) {
+        const contextText = (o.context || [])
+          .map(function (c) { return normalize(c.value); })
+          .join(' ');
+
+        if (name.indexOf(query) === -1
+          && rankText.indexOf(query) === -1
+          && contextText.indexOf(query) === -1) {
           return false;
         }
       }

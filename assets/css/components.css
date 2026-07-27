@@ -211,6 +211,19 @@
   letter-spacing: 0.03em;
 }
 
+.contact-card--od {
+  border-style: dashed;
+  border-color: #2b7fd9;
+  background: rgba(43, 127, 217, 0.06);
+}
+
+.chip--od {
+  background: rgba(43, 127, 217, 0.16);
+  color: #1c5ba3;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+}
+
 .contact-card__header {
   display: flex;
   align-items: flex-start;

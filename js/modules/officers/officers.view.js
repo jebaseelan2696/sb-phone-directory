@@ -117,13 +117,27 @@ const OfficersView = (function () {
     }, ['\u{1F4C7}']);
   }
 
+  function icRow(officer) {
+    const rows = [
+      officer.icOfficer ? el('div', { class: 'action-row' }, [
+        el('span', { class: 'action-row__label' }, ['I/C Officer']),
+        el('span', { class: 'action-row__number' }, [officer.icOfficer])
+      ]) : null,
+      phoneActionRow('I/C Contact', officer.icContactNo)
+    ].filter(Boolean);
+    return rows;
+  }
+
   function card(officer) {
-    const isVacant = (officer.postStatus || '').toLowerCase() === 'vacant';
+    const status = (officer.postStatus || '').toLowerCase();
+    const isVacant = status === 'vacant';
+    const isOD = status === 'od';
 
     const metaChips = [
       officer.rank ? el('span', { class: 'chip chip--rank' }, [officer.rank]) : null,
       officer.mikeSignNo ? el('span', { class: 'chip' }, ['Mike Sign: ' + officer.mikeSignNo]) : null,
-      isVacant ? el('span', { class: 'chip chip--vacant' }, ['VACANT']) : null
+      isVacant ? el('span', { class: 'chip chip--vacant' }, ['VACANT']) : null,
+      isOD ? el('span', { class: 'chip chip--od' }, ['On OD']) : null
     ].filter(Boolean);
 
     const contextLines = (officer.context || []).map(function (c) {
@@ -135,13 +149,16 @@ const OfficersView = (function () {
 
     let actionRows;
     if (isVacant) {
+      actionRows = icRow(officer);
+    } else if (isOD) {
+      // Still reachable directly, so keep their own numbers, plus
+      // whoever's covering for them meanwhile (if provided).
       actionRows = [
-        officer.icOfficer ? el('div', { class: 'action-row' }, [
-          el('span', { class: 'action-row__label' }, ['I/C Officer']),
-          el('span', { class: 'action-row__number' }, [officer.icOfficer])
-        ]) : null,
-        phoneActionRow('I/C Contact', officer.icContactNo)
-      ].filter(Boolean);
+        phoneActionRow('CUG No.', officer.cugNo),
+        phoneActionRow('Mobile No. 1', officer.addlNo1),
+        phoneActionRow('Mobile No. 2', officer.addlNo2),
+        whatsappRow(officer.whatsappNo)
+      ].filter(Boolean).concat(icRow(officer));
     } else {
       actionRows = [
         phoneActionRow('CUG No.', officer.cugNo),
@@ -165,7 +182,11 @@ const OfficersView = (function () {
       (!isVacant && officer.email) ? el('div', { class: 'contact-card__email' }, ['✉️ ' + officer.email]) : null
     ]).filter(Boolean);
 
-    return el('div', { class: 'contact-card' + (isVacant ? ' contact-card--vacant' : '') }, children);
+    const cardClass = 'contact-card'
+      + (isVacant ? ' contact-card--vacant' : '')
+      + (isOD ? ' contact-card--od' : '');
+
+    return el('div', { class: cardClass }, children);
   }
 
   function sectionHeader(label) {
