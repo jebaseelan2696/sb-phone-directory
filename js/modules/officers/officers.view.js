@@ -77,7 +77,7 @@ const OfficersView = (function () {
     lines.push('N:;' + savedName + ';;;');
     lines.push('FN:' + savedName);
 
-    const org = [APP_CONFIG.ORG_NAME, officer.typeLabel].filter(Boolean).join(';');
+    const org = [APP_CONFIG.ORG_SUBTITLE, officer.typeLabel].filter(Boolean).join(';');
     if (org) lines.push('ORG:' + org);
     if (officer.rank) lines.push('TITLE:' + officer.rank);
 
