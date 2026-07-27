@@ -77,10 +77,10 @@ a {
   z-index: 19;
   display: flex;
   gap: var(--space-2);
-  padding: var(--space-2) var(--space-4);
+  padding: var(--space-3) var(--space-4);
   background: var(--color-surface);
   border-bottom: 1px solid var(--color-border);
-  max-width: var(--max-content-width);
+  width: 100%;
   margin: 0 auto;
   overflow-x: auto;
   -webkit-overflow-scrolling: touch;
@@ -88,11 +88,13 @@ a {
 }
 
 .module-nav__btn {
-  flex: none;
+  flex: 1 1 0;
+  min-width: 72px;
   white-space: nowrap;
-  padding: var(--space-2) var(--space-3);
-  font-size: var(--font-size-sm);
-  font-weight: 600;
+  text-align: center;
+  padding: var(--space-3) var(--space-3);
+  font-size: var(--font-size-base);
+  font-weight: 700;
   border: none;
   border-radius: var(--radius-sm);
   background: transparent;

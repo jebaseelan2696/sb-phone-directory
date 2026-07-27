@@ -132,7 +132,7 @@ const OfficersModule = (function () {
 
   function showLoading(root) {
     root.innerHTML = '';
-    root.appendChild(UI.loader());
+    root.appendChild(UI.loader('Loading officers...'));
   }
 
   function showError(root, message) {

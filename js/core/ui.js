@@ -20,10 +20,10 @@ const UI = (function () {
     }, 1800);
   }
 
-  function loader() {
+  function loader(message) {
     return el('div', { class: 'loader' }, [
       el('div', { class: 'loader__spinner' }),
-      el('p', {}, ['Loading directory...'])
+      el('p', {}, [message || 'Loading directory...'])
     ]);
   }
 
