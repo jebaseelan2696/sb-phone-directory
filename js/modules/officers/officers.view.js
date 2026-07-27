@@ -105,13 +105,11 @@ const OfficersView = (function () {
   function saveContactButton(officer) {
     const vcard = buildVCard(officer);
     const href = 'data:text/vcard;charset=utf-8,' + encodeURIComponent(vcard);
-    const savedName = officer.saveAs || officer.name;
-    const fileName = savedName.replace(/[^\w\s-]/g, '').trim().replace(/\s+/g, '_') + '.vcf';
 
+    // No `download` attribute here on purpose — see directory.view.js for why.
     return el('a', {
       class: 'icon-btn icon-btn--save-contact',
       href: href,
-      download: fileName,
       title: 'Save to Contacts',
       'aria-label': 'Save ' + officer.name + ' to Contacts'
     }, ['\u{1F4C7}']);
@@ -168,10 +166,40 @@ const OfficersView = (function () {
     return el('div', { class: 'contact-card' + (isVacant ? ' contact-card--vacant' : '') }, children);
   }
 
+  function sectionHeader(label) {
+    return el('div', { class: 'section-header' }, [label]);
+  }
+
+  /** Finds the "Unit/Wing" context value for an officer, if present. */
+  function groupingValue(officer) {
+    const entry = (officer.context || []).find(function (c) { return c.label === 'Unit/Wing'; });
+    return entry ? entry.value : null;
+  }
+
+  /**
+   * Renders officers with a section header per Unit/Wing value, same
+   * visual pattern as the SB Directory's Groupings feature — preserves
+   * incoming order (already ID-sorted upstream) rather than alphabetizing.
+   * Roles without a "Unit/Wing" context field (e.g. SHOs) just render as
+   * a flat list, no grouping applied.
+   */
   function renderList(container, officers) {
     container.innerHTML = '';
     const frag = document.createDocumentFragment();
-    officers.forEach(function (o) { frag.appendChild(card(o)); });
+    const groupable = officers.every(function (o) { return groupingValue(o) !== null; });
+    let lastGroup = null;
+
+    officers.forEach(function (o) {
+      if (groupable) {
+        const group = groupingValue(o);
+        if (group !== lastGroup) {
+          frag.appendChild(sectionHeader(group));
+          lastGroup = group;
+        }
+      }
+      frag.appendChild(card(o));
+    });
+
     container.appendChild(frag);
   }
 
