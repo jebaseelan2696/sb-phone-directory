@@ -124,14 +124,13 @@ const DirectoryView = (function () {
   function saveContactButton(contact) {
     const vcard = buildVCard(contact);
     const href = 'data:text/vcard;charset=utf-8,' + encodeURIComponent(vcard);
+    const savedName = contact.saveAs || contact.name;
+    const fileName = savedName.replace(/[^\w\s-]/g, '').trim().replace(/\s+/g, '_') + '.vcf';
 
-    // No `download` attribute here on purpose: forcing a download makes
-    // mobile browsers save a .vcf file to Downloads instead of handing it
-    // straight to the Contacts app. Without it, most phones recognize the
-    // vCard content type and open the "Add Contact" screen directly.
     return el('a', {
       class: 'icon-btn icon-btn--save-contact',
       href: href,
+      download: fileName,
       title: 'Save to Contacts',
       'aria-label': 'Save ' + contact.name + ' to Contacts'
     }, ['\u{1F4C7}']);

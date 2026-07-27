@@ -105,11 +105,13 @@ const OfficersView = (function () {
   function saveContactButton(officer) {
     const vcard = buildVCard(officer);
     const href = 'data:text/vcard;charset=utf-8,' + encodeURIComponent(vcard);
+    const savedName = officer.saveAs || officer.name;
+    const fileName = savedName.replace(/[^\w\s-]/g, '').trim().replace(/\s+/g, '_') + '.vcf';
 
-    // No `download` attribute here on purpose — see directory.view.js for why.
     return el('a', {
       class: 'icon-btn icon-btn--save-contact',
       href: href,
+      download: fileName,
       title: 'Save to Contacts',
       'aria-label': 'Save ' + officer.name + ' to Contacts'
     }, ['\u{1F4C7}']);
