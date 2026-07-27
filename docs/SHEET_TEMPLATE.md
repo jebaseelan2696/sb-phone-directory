@@ -14,6 +14,12 @@ Row 1 = headers, exactly as written (used by the API to map columns):
 - Rows sharing the same Groupings text will appear together under one section header, in the order your IDs already put them in.
 - Leave it blank only if you don't want that row to have a distinct section (it'll fall under an "Unassigned" heading).
 
+**Optional column: `Save As`**
+- Add this column anywhere in row 1 (order doesn't matter — matched by header name).
+- Type the exact name you want saved to a phone's Contacts app when someone taps "Save Contact" or "Save All", e.g. `SB SD Srivaikundam SSI Tr. P. Sankar`.
+- If left blank for a row, the app falls back to using the `Name` column as the saved contact name.
+- This column is optional — the app works fine without it, and you can add it any time.
+
 **Important formatting steps:**
 1. Select columns **H, I, J, K** (CUG No., Addl. No. I, Addl. No. II, WhatsApp No.) → Format → Number → **Plain text**. This prevents Sheets from mangling phone numbers (dropping leading zeros, scientific notation).
 2. Column **A (ID)**: use the pattern `SB-0001`, `SB-0002`, ... in the exact display order you want (HQ staff first grouped by duty, then field staff grouped by Sub-Division → Police Station).

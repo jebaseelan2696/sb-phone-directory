@@ -78,6 +78,64 @@ const DirectoryView = (function () {
     ]);
   }
 
+  /**
+   * Builds a standard vCard (.vcf) text block for a contact, including
+   * every phone number that's actually present. Phones recognize this
+   * format and offer to save it directly into Contacts.
+   */
+  function buildVCard(contact) {
+    const savedName = contact.saveAs || contact.name;
+    const lines = ['BEGIN:VCARD', 'VERSION:3.0'];
+    lines.push('N:;' + savedName + ';;;');
+    lines.push('FN:' + savedName);
+
+    const org = [APP_CONFIG.ORG_NAME, contact.category].filter(Boolean).join(';');
+    if (org) lines.push('ORG:' + org);
+    if (contact.rank) lines.push('TITLE:' + contact.rank);
+
+    if (contact.cugNo) lines.push('TEL;TYPE=CELL:' + contact.cugNo);
+    if (contact.addlNo1) lines.push('TEL;TYPE=CELL:' + contact.addlNo1);
+    if (contact.addlNo2) lines.push('TEL;TYPE=CELL:' + contact.addlNo2);
+    if (contact.email) lines.push('EMAIL:' + contact.email);
+    if (contact.posting) lines.push('NOTE:' + contact.posting);
+
+    lines.push('END:VCARD');
+    return lines.join('\r\n');
+  }
+
+  /**
+   * Triggers a browser download of a combined .vcf containing one VCARD
+   * block per contact. Uses a Blob + temporary link rather than a data
+   * URI, since data URIs can be unreliable for larger multi-contact
+   * files on some mobile browsers.
+   */
+  function downloadContactsVCard(contacts, fileName) {
+    const combined = contacts.map(buildVCard).join('\r\n');
+    const blob = new Blob([combined], { type: 'text/vcard;charset=utf-8' });
+    const url = URL.createObjectURL(blob);
+
+    const link = el('a', { href: url, download: fileName });
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    setTimeout(function () { URL.revokeObjectURL(url); }, 1000);
+  }
+
+  function saveContactButton(contact) {
+    const vcard = buildVCard(contact);
+    const href = 'data:text/vcard;charset=utf-8,' + encodeURIComponent(vcard);
+    const savedName = contact.saveAs || contact.name;
+    const fileName = savedName.replace(/[^\w\s-]/g, '').trim().replace(/\s+/g, '_') + '.vcf';
+
+    return el('a', {
+      class: 'icon-btn icon-btn--save-contact',
+      href: href,
+      download: fileName,
+      title: 'Save to Contacts',
+      'aria-label': 'Save ' + contact.name + ' to Contacts'
+    }, ['\u{1F4C7}']);
+  }
+
   function card(contact) {
     const metaChips = [
       contact.rank ? el('span', { class: 'chip chip--rank' }, [contact.rank]) : null,
@@ -95,7 +153,10 @@ const DirectoryView = (function () {
     const children = [
       el('div', { class: 'contact-card__header' }, [
         el('div', { class: 'contact-card__name' }, [contact.name]),
-        el('div', { class: 'contact-card__id' }, [contact.id])
+        el('div', { class: 'contact-card__header-right' }, [
+          el('div', { class: 'contact-card__id' }, [contact.id]),
+          saveContactButton(contact)
+        ])
       ]),
       metaChips.length ? el('div', { class: 'contact-card__meta' }, metaChips) : null,
       contact.posting ? el('div', { class: 'contact-card__posting' }, [
@@ -136,5 +197,8 @@ const DirectoryView = (function () {
     container.appendChild(frag);
   }
 
-  return { renderGroupedList: renderGroupedList };
+  return {
+    renderGroupedList: renderGroupedList,
+    downloadContactsVCard: downloadContactsVCard
+  };
 })();

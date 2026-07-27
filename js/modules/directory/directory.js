@@ -10,6 +10,7 @@ const DirectoryModule = (function () {
   let criteria = { query: '', rank: '', category: '', posting: '' };
 
   let els = {};
+  let lastFiltered = [];
 
   function buildShell(root) {
     root.innerHTML = '';
@@ -32,12 +33,15 @@ const DirectoryModule = (function () {
       el('button', { class: 'filter-bar__reset', id: 'filter-reset', type: 'button' }, ['Reset'])
     ]);
 
-    const summary = el('div', { class: 'result-summary', id: 'result-summary' });
+    const summaryBar = el('div', { class: 'summary-bar' }, [
+      el('div', { class: 'result-summary', id: 'result-summary' }),
+      el('button', { class: 'save-all-btn', id: 'save-all-btn', type: 'button' }, ['\u{1F4C7} Save All to Contacts'])
+    ]);
     const grid = el('div', { class: 'card-grid', id: 'card-grid' });
 
     root.appendChild(searchBar);
     root.appendChild(filterBar);
-    root.appendChild(summary);
+    root.appendChild(summaryBar);
     root.appendChild(grid);
 
     els = {
@@ -48,6 +52,7 @@ const DirectoryModule = (function () {
       filterPosting: $('#filter-posting', root),
       filterReset: $('#filter-reset', root),
       summary: $('#result-summary', root),
+      saveAllBtn: $('#save-all-btn', root),
       grid: $('#card-grid', root)
     };
   }
@@ -75,6 +80,7 @@ const DirectoryModule = (function () {
 
   function render() {
     const filtered = DirectoryFilter.apply(allContacts, criteria);
+    lastFiltered = filtered;
 
     els.summary.textContent = filtered.length === allContacts.length
       ? filtered.length + ' personnel'
@@ -87,6 +93,7 @@ const DirectoryModule = (function () {
       DirectoryView.renderGroupedList(els.grid, filtered);
     }
 
+    els.saveAllBtn.disabled = filtered.length === 0;
     updateResetVisibility();
   }
 
@@ -125,6 +132,12 @@ const DirectoryModule = (function () {
       els.filterCategory.value = '';
       els.filterPosting.value = '';
       render();
+    });
+
+    els.saveAllBtn.addEventListener('click', function () {
+      if (!lastFiltered.length) return;
+      DirectoryView.downloadContactsVCard(lastFiltered, 'SB_Directory_Contacts.vcf');
+      UI.toast('Saved ' + lastFiltered.length + ' contacts');
     });
   }
 

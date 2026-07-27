@@ -12,9 +12,12 @@ function doGet(e) {
     switch (action) {
       case 'clearcache':
         CacheService.getScriptCache().remove(CACHE_KEY);
+        CacheService.getScriptCache().remove(OFFICERS_CACHE_KEY);
         return jsonResponse_(successEnvelope_({ cleared: true }));
       case 'directory':
         return jsonResponse_(successEnvelope_(buildDirectoryPayload_()));
+      case 'officers':
+        return jsonResponse_(successEnvelope_(buildOfficersPayload_()));
       case 'ping':
         return jsonResponse_(successEnvelope_({
           appVersion: APP_VERSION,

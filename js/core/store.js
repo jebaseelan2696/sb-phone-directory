@@ -1,16 +1,15 @@
 /**
  * store.js
- * In-memory + localStorage-backed cache for the directory payload, with
- * a simple TTL so the app works instantly on repeat visits and only
- * re-fetches when the cache is stale or the user forces a refresh.
+ * In-memory + localStorage-backed cache factory, with a simple TTL so
+ * the app works instantly on repeat visits and only re-fetches when the
+ * cache is stale or the user forces a refresh. Each module gets its own
+ * cache instance (own storage key) so their data never clashes.
  */
 
-const Store = (function () {
-  const STORAGE_KEY = 'sb_directory_cache_v1';
-
+function createCacheStore_(storageKey) {
   function read() {
     try {
-      const raw = localStorage.getItem(STORAGE_KEY);
+      const raw = localStorage.getItem(storageKey);
       if (!raw) return null;
       const parsed = JSON.parse(raw);
       const ageMs = Date.now() - parsed.savedAt;
@@ -24,7 +23,7 @@ const Store = (function () {
 
   function write(payload) {
     try {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify({
+      localStorage.setItem(storageKey, JSON.stringify({
         savedAt: Date.now(),
         payload: payload
       }));
@@ -34,8 +33,11 @@ const Store = (function () {
   }
 
   function clear() {
-    localStorage.removeItem(STORAGE_KEY);
+    localStorage.removeItem(storageKey);
   }
 
-  return { read, write, clear };
-})();
+  return { read: read, write: write, clear: clear };
+}
+
+const Store = createCacheStore_('sb_directory_cache_v1');
+const OfficersStore = createCacheStore_('sb_officers_cache_v1');

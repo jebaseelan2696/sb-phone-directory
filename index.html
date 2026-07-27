@@ -19,8 +19,17 @@
   <button class="theme-toggle" id="theme-toggle" type="button" aria-label="Toggle dark mode">🌙</button>
 </header>
 
+<nav class="module-nav" id="module-nav">
+  <button class="module-nav__btn is-active" type="button" data-module="directory">SB</button>
+  <button class="module-nav__btn" type="button" data-module="officers" data-type="adsp">ADSsP</button>
+  <button class="module-nav__btn" type="button" data-module="officers" data-type="sdpo">SDPOs</button>
+  <button class="module-nav__btn" type="button" data-module="officers" data-type="sho">SHOs</button>
+  <button class="module-nav__btn" type="button" data-module="officers" data-type="ministerial">Ministerial Stfs</button>
+</nav>
+
 <main class="app-main">
-  <div id="app-content"></div>
+  <div id="directory-content"></div>
+  <div id="officers-content" style="display:none"></div>
   <div class="footer-meta">SB Phone Directory &middot; Version 1.0</div>
 </main>
 
@@ -33,6 +42,9 @@
 <script src="js/modules/directory/directory.filter.js"></script>
 <script src="js/modules/directory/directory.view.js"></script>
 <script src="js/modules/directory/directory.js"></script>
+<script src="js/modules/officers/officers.filter.js"></script>
+<script src="js/modules/officers/officers.view.js"></script>
+<script src="js/modules/officers/officers.js"></script>
 <script src="js/app.js"></script>
 </body>
 </html>

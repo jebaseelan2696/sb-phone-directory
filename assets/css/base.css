@@ -71,6 +71,45 @@ a {
   text-overflow: ellipsis;
 }
 
+.module-nav {
+  position: sticky;
+  top: var(--header-height);
+  z-index: 19;
+  display: flex;
+  gap: var(--space-2);
+  padding: var(--space-2) var(--space-4);
+  background: var(--color-surface);
+  border-bottom: 1px solid var(--color-border);
+  max-width: var(--max-content-width);
+  margin: 0 auto;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: thin;
+}
+
+.module-nav__btn {
+  flex: none;
+  white-space: nowrap;
+  padding: var(--space-2) var(--space-3);
+  font-size: var(--font-size-sm);
+  font-weight: 600;
+  border: none;
+  border-radius: var(--radius-sm);
+  background: transparent;
+  color: var(--color-text-muted);
+  cursor: pointer;
+  transition: background var(--transition-fast), color var(--transition-fast);
+}
+
+.module-nav__btn:hover {
+  background: var(--color-surface-alt);
+}
+
+.module-nav__btn.is-active {
+  background: var(--color-primary);
+  color: var(--color-text-inverse);
+}
+
 .app-main {
   max-width: var(--max-content-width);
   margin: 0 auto;

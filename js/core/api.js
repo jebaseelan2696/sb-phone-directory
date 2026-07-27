@@ -14,8 +14,8 @@ const Api = (function () {
     ]);
   }
 
-  function getDirectory() {
-    const url = APP_CONFIG.API_BASE_URL + '?action=directory';
+  function getJson_(action) {
+    const url = APP_CONFIG.API_BASE_URL + '?action=' + action;
     return withTimeout(fetch(url), APP_CONFIG.API_TIMEOUT_MS)
       .then(function (res) {
         if (!res.ok) throw new Error('Server returned status ' + res.status);
@@ -29,5 +29,13 @@ const Api = (function () {
       });
   }
 
-  return { getDirectory: getDirectory };
+  function getDirectory() {
+    return getJson_('directory');
+  }
+
+  function getOfficers() {
+    return getJson_('officers');
+  }
+
+  return { getDirectory: getDirectory, getOfficers: getOfficers };
 })();

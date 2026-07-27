@@ -52,7 +52,7 @@ function readContacts_(ss) {
 
   const required = [
     'ID', 'Name', 'Rank', 'General No.', 'Category', 'Groupings',
-    'Nature of Duty / Posting', 'CUG No.', 'Addl. No. I', 'Addl. No. II',
+    'Nature of Duty / Posting', 'CUG No.', 'Mobile No. 1', 'Mobile No. 2',
     'WhatsApp No.', 'Email', 'Photo URL', 'Active', 'Updated At', 'Remarks'
   ];
   required.forEach(function (col) {
@@ -75,14 +75,17 @@ function readContacts_(ss) {
     contacts.push({
       id: id,
       name: name,
+      // Optional column — falls back to '' (client then uses `name`) if
+      // the "Save As" column hasn't been added to the sheet yet.
+      saveAs: ('Save As' in colIndex) ? trimVal_(row[colIndex['Save As']]) : '',
       rank: trimVal_(row[colIndex['Rank']]),
       generalNo: trimVal_(row[colIndex['General No.']]),
       category: trimVal_(row[colIndex['Category']]),
       grouping: trimVal_(row[colIndex['Groupings']]),
       posting: trimVal_(row[colIndex['Nature of Duty / Posting']]),
       cugNo: normalizePhone_(row[colIndex['CUG No.']]),
-      addlNo1: normalizePhone_(row[colIndex['Addl. No. I']]),
-      addlNo2: normalizePhone_(row[colIndex['Addl. No. II']]),
+      addlNo1: normalizePhone_(row[colIndex['Mobile No. 1']]),
+      addlNo2: normalizePhone_(row[colIndex['Mobile No. 2']]),
       whatsappNo: normalizePhone_(row[colIndex['WhatsApp No.']]),
       email: trimVal_(row[colIndex['Email']]),
       photoUrl: trimVal_(row[colIndex['Photo URL']])
