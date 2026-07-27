@@ -193,10 +193,20 @@ const OfficersView = (function () {
     return el('div', { class: 'section-header' }, [label]);
   }
 
-  /** Finds the "Unit/Wing" context value for an officer, if present. */
+  // Priority order of context field names to group by, per role. ADSsP/
+  // SDPOs use "Unit/Wing"; SHOs (and roles with both a station and a
+  // sub-division) group by "Sub Division" instead, since that's the
+  // more useful grouping — several stations share one sub-division.
+  var GROUPING_FIELD_PRIORITY_ = ['Sub Division', 'Unit/Wing'];
+
+  /** Finds a usable grouping value for an officer's card, if present. */
   function groupingValue(officer) {
-    const entry = (officer.context || []).find(function (c) { return c.label === 'Unit/Wing'; });
-    return entry ? entry.value : null;
+    const context = officer.context || [];
+    for (let i = 0; i < GROUPING_FIELD_PRIORITY_.length; i++) {
+      const entry = context.find(function (c) { return c.label === GROUPING_FIELD_PRIORITY_[i]; });
+      if (entry) return entry.value;
+    }
+    return null;
   }
 
   /**
