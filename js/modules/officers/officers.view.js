@@ -176,7 +176,11 @@ const OfficersView = (function () {
           !isVacant ? saveContactButton(officer) : null
         ].filter(Boolean))
       ]),
-      metaChips.length ? el('div', { class: 'contact-card__meta' }, metaChips) : null
+      metaChips.length ? el('div', { class: 'contact-card__meta' }, metaChips) : null,
+      (isOD && officer.odDetails) ? el('div', { class: 'contact-card__posting' }, [
+        el('span', { class: 'contact-card__posting-label' }, ['On Other Duty']),
+        officer.odDetails
+      ]) : null
     ].concat(contextLines).concat([
       actionRows.length ? el('div', { class: 'contact-card__actions' }, actionRows) : null,
       (!isVacant && officer.email) ? el('div', { class: 'contact-card__email' }, ['✉️ ' + officer.email]) : null
@@ -197,7 +201,7 @@ const OfficersView = (function () {
   // SDPOs use "Unit/Wing"; SHOs (and roles with both a station and a
   // sub-division) group by "Sub Division" instead, since that's the
   // more useful grouping — several stations share one sub-division.
-  var GROUPING_FIELD_PRIORITY_ = ['Sub Division', 'Unit/Wing'];
+  var GROUPING_FIELD_PRIORITY_ = ['Section', 'Sub Division', 'Unit/Wing'];
 
   /** Finds a usable grouping value for an officer's card, if present. */
   function groupingValue(officer) {

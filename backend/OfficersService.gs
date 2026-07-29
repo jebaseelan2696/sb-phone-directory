@@ -16,9 +16,19 @@
 var OFFICER_COMMON_HEADERS_ = [
   'ID', 'Name', 'Rank', 'Mike Sign No.', 'CUG No.', 'Mobile No. 1',
   'Mobile No. 2', 'WhatsApp No.', 'Email', 'Photo URL', 'Active',
-  'Updated At', 'Remarks', 'Save As', 'Post Status', 'I/C Officer',
-  'I/C Contact No.'
+  'Updated At', 'Remarks', 'Save As', 'Post Status', 'OD Details',
+  'I/C Officer', 'I/C Staff', 'I/C Contact No.'
 ];
+
+/** Reads the first of several possible header names that exists on this sheet. */
+function readAliased_(row, colIndex, headerNames, transform) {
+  for (let i = 0; i < headerNames.length; i++) {
+    if (colIndex[headerNames[i]] !== undefined) {
+      return transform(row[colIndex[headerNames[i]]]);
+    }
+  }
+  return '';
+}
 
 function buildOfficersPayload_() {
   const cache = CacheService.getScriptCache();
@@ -91,7 +101,8 @@ function readOfficerSheet_(ss, roleConfig) {
       email: colIndex['Email'] !== undefined ? trimVal_(row[colIndex['Email']]) : '',
       photoUrl: colIndex['Photo URL'] !== undefined ? trimVal_(row[colIndex['Photo URL']]) : '',
       postStatus: colIndex['Post Status'] !== undefined ? trimVal_(row[colIndex['Post Status']]) : 'Regular',
-      icOfficer: colIndex['I/C Officer'] !== undefined ? trimVal_(row[colIndex['I/C Officer']]) : '',
+      odDetails: colIndex['OD Details'] !== undefined ? trimVal_(row[colIndex['OD Details']]) : '',
+      icOfficer: readAliased_(row, colIndex, ['I/C Officer', 'I/C Staff'], trimVal_),
       icContactNo: colIndex['I/C Contact No.'] !== undefined ? normalizePhone_(row[colIndex['I/C Contact No.']]) : '',
       context: context
       // Remarks intentionally excluded — internal-only, not sent to client.
